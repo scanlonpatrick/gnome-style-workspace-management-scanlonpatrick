@@ -1,0 +1,6 @@
+{
+"uuid": "gnome-style-workspaces@pscanlon.me",
+"name": "Gnome Style Workspaces",
+"description": "Automatically creates new workspaces when you open a window on the last workspace and cleans up empty workspaces",
+"version": "0.1"
+}
