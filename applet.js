@@ -29,9 +29,9 @@ MyApplet.prototype = {
 				let workspace = global.screen.get_workspace_by_index(i);
 				//if(!workspace) global.log("uh oh workspace is falsey"); else global.log("got the workspace!");
 
-				//global.log("number of windows in workspace: " + workspace.list_windows().length);
+				global.log("number of windows in workspace: " + workspace.list_windows().length);
 				
-				if(workspace.list_windows().length === 1 && i !== 0 && i<global.screen.n_workspaces-1){
+				if(this._getWindows(workspace) === 0 && i !== 0 && i<global.screen.n_workspaces-1){
 					//global.log('found a workspace to close! #' + i);
 					global.screen.remove_workspace(workspace, global.get_current_time());
 				}
@@ -48,9 +48,20 @@ MyApplet.prototype = {
 		global.log('window opened fired');
 		let lastWorkspaceIndex = global.screen.n_workspaces - 1;
 		let workspace = global.screen.get_workspace_by_index(lastWorkspaceIndex);
-		if(workspace.list_windows().length > 1){
+		let windows = this._getWindows(workspace);
+		global.log('windows in this workspace: ' + windows.length);
+		global.log('window list: ' + windows);
+		if(windows.length > 1){
 			global.screen.append_new_workspace(false, global.get_current_time());
 		}
+		this._updateAppletText();
+	},
+	_getWindows: function(workspace){
+		return workspace.list_windows().filter(
+			function(item) {
+				return !item.is_skip_taskbar() && item.is_on_all_workspaces();
+			}
+		);
 	}
 };
 
